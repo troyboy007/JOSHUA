@@ -1,783 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media & Wellbeing: A Relatable Exploration</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tone.js CDN for background music -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-color: #0d0d1a; /* Dark background */
-            color: #e0e0e0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joshua Houston — Available & Technically Alive</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --blush: #e8c4b0;
+    --dusty-rose: #c9887a;
+    --terracotta: #b05a3e;
+    --deep: #2b1a12;
+    --warm-mid: #6b3a25;
+    --accent: #d4a853;
+    --faint: #ede5d8;
+  }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a2e;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6a057e;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8e2de2;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Hero section specific styles */
-        .hero-background-gradient {
-            background: linear-gradient(270deg, #1a1a2e, #0f0c29, #311c52, #471a5a, #6a057e);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            transition: filter 0.5s ease-out; /* Smooth transition for blur/grayscale */
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  body {
+    background-color: var(--cream);
+    color: var(--deep);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
 
-        /* Distortion effect on hover for hero background */
-        .hero-background-gradient:hover {
-            filter: blur(3px) grayscale(30%);
-        }
+  /* PAPER TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        /* Pulse animation for buttons/nodes */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(138, 43, 226, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(138, 43, 226, 0); }
-        }
-        .animate-pulse-custom {
-            animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
-        }
+  .page-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 30px 100px;
+    position: relative;
+    z-index: 1;
+  }
 
-        /* Scroll-triggered animation styles */
-        .reveal-on-scroll {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .reveal-on-scroll.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.9s ease both;
+  }
 
-        /* Standard Card styling for positive impacts and privacy terms */
-        .info-card {
-            cursor: pointer;
-            transition: transform 0.3s ease-out, background-color 0.3s ease-out, box-shadow 0.3s ease-out;
-            background-color: rgba(49, 28, 82, 0.7); /* Darker purple tint */
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
-        }
-        .info-card:hover {
-            transform: scale(1.05);
-            background-color: rgba(60, 35, 100, 0.8);
-            box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
-        }
+  .stamp {
+    display: inline-block;
+    border: 3px solid var(--terracotta);
+    color: var(--terracotta);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    margin-bottom: 24px;
+    transform: rotate(-1.5deg);
+    opacity: 0.85;
+  }
 
-        /* Modal specific styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 100; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
-            backdrop-filter: blur(8px); /* Blur background */
-            -webkit-backdrop-filter: blur(8px);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 8vw, 5.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--deep);
+    margin-bottom: 12px;
+  }
 
-        .modal-content {
-            background-color: #1a1a2e;
-            margin: auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-            max-width: 700px;
-            width: 90%;
-            color: #e0e0e0;
-            position: relative;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: modalFadeIn 0.3s forwards;
-            max-height: 90vh; /* Limit modal height */
-            overflow-y: auto; /* Enable scrolling within modal */
-        }
+  h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
 
-        @keyframes modalFadeIn {
-            to { transform: translateY(0); opacity: 1; }
-        }
+  .subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-top: 16px;
+  }
 
-        .modal-close-button {
-            color: #aaa;
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 32px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
+  .divider {
+    width: 120px;
+    height: 1px;
+    background: var(--blush);
+    margin: 28px auto;
+  }
 
-        .modal-close-button:hover,
-        .modal-close-button:focus {
-            color: #fff;
-            text-decoration: none;
-        }
+  /* PROFILE CARD */
+  .profile-card {
+    background: white;
+    border: 1px solid var(--blush);
+    border-radius: 2px;
+    padding: 50px 50px;
+    margin-bottom: 36px;
+    position: relative;
+    box-shadow: 6px 6px 0px var(--blush);
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
 
-        /* Slider track styling */
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px; /* Thickness of the track */
-            background: linear-gradient(to right, #ee2a7b, #ff6c6c); /* Reddish gradient */
-            border-radius: 5px;
-            outline: none;
-            transition: opacity .2s;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px; /* Size of the thumb */
-            height: 20px;
-            border-radius: 50%;
-            background: #fff; /* White thumb */
-            cursor: grab;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-            transition: background .2s ease-in-out;
-        }
-        input[type="range"]::-webkit-slider-thumb:active {
-            cursor: grabbing;
-            background: #ee2a7b; /* Change color when active */
-        }
+  .profile-card::before {
+    content: '♡';
+    position: absolute;
+    top: -14px;
+    right: 40px;
+    background: var(--cream);
+    padding: 0 10px;
+    font-size: 1.4rem;
+    color: var(--dusty-rose);
+  }
 
-        /* Styling for the slider value indicator */
-        .slider-value-indicator {
-            position: absolute;
-            bottom: -30px; /* Position below the slider */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ee2a7b; /* Reddish tone */
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            pointer-events: none; /* Allow clicks through */
-        }
-        input[type="range"]:active + .slider-value-indicator,
-        input[type="range"]:focus + .slider-value-indicator {
-            opacity: 1;
-        }
+  .avatar-zone {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
 
-        /* Abstract visual elements for negative impact section */
-        .fragmented-shape {
-            position: absolute;
-            background: rgba(255, 0, 0, 0.3); /* Reddish tint for negative */
-            border-radius: 50%;
-            filter: blur(10px);
-            opacity: 0.5;
-            animation: float 10s infinite ease-in-out alternate;
-        }
-        .shape-1 { top: 10%; left: 15%; width: 80px; height: 80px; animation-delay: 0s; }
-        .shape-2 { top: 30%; right: 20%; width: 120px; height: 120px; animation-delay: 2s; background: rgba(255, 255, 0, 0.3); }
-        .shape-3 { bottom: 20%; left: 25%; width: 100px; height: 100px; animation-delay: 4s; }
-        .shape-4 { top: 60%; left: 5%; width: 70px; height: 70px; animation-delay: 6s; background: rgba(0, 255, 255, 0.3); }
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-20px) translateX(10px); }
-            100% { transform: translateY(0) translateX(0); }
-        }
+  .avatar {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--faint) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    border: 3px solid var(--blush);
+    position: relative;
+    overflow: hidden;
+  }
 
-        /* Card flip effect for wellbeing section */
-        .flip-card {
-            background-color: transparent;
-            width: 100%;
-            height: 200px; /* Fixed height for consistency */
-            perspective: 1000px; /* 3D effect */
-        }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* Hide back of the card */
-            backface-visibility: hidden;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: white;
-            box-sizing: border-box;
-        }
-        .flip-card-front {
-            background: linear-gradient(135deg, #4a00e0, #8e2de2); /* Purple gradient */
-            z-index: 2;
-        }
-        .flip-card-back {
-            background: linear-gradient(135deg, #00b09b, #96c93d); /* Greenish gradient */
-            transform: rotateY(180deg);
-        }
+  .avatar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.4), transparent 60%);
+    border-radius: 50%;
+  }
 
-        /* Music Toggle Button */
-        #music-toggle-btn {
-            background-color: #6a057e;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 9999px; /* Fully rounded */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            font-weight: bold;
-            transition: all 0.3s ease;
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        #music-toggle-btn:hover {
-            background-color: #8e2de2;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-        }
-    </style>
+  .name-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1.1;
+  }
+
+  .name-block h2 span {
+    font-style: italic;
+    color: var(--dusty-rose);
+  }
+
+  .tagline {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    margin-top: 8px;
+    margin-bottom: 20px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .badge {
+    background: var(--faint);
+    border: 1px solid var(--blush);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    color: var(--warm-mid);
+  }
+
+  .badge.highlight {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+    color: white;
+  }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--blush);
+    border: 1px solid var(--blush);
+    margin-bottom: 40px;
+  }
+
+  .stat-cell {
+    background: white;
+    padding: 20px 16px;
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1;
+  }
+
+  .stat-note {
+    font-size: 0.6rem;
+    color: var(--warm-mid);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* SECTIONS */
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--blush);
+  }
+
+  .bio-text {
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: var(--warm-mid);
+    margin-bottom: 36px;
+  }
+
+  .bio-text strong {
+    color: var(--deep);
+    font-weight: 400;
+  }
+
+  /* FEATURE LIST */
+  .feature-list {
+    list-style: none;
+    margin-bottom: 36px;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px dashed var(--faint);
+    font-size: 0.82rem;
+    color: var(--warm-mid);
+  }
+
+  .feature-list li:last-child { border-bottom: none; }
+
+  .feature-list li .icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+
+  .feature-list li strong {
+    color: var(--deep);
+    font-weight: 400;
+    min-width: 120px;
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* SKILL BARS */
+  .skill-section {
+    margin-bottom: 36px;
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .skill-name {
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--warm-mid);
+    width: 130px;
+    flex-shrink: 0;
+  }
+
+  .skill-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--faint);
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    background: var(--dusty-rose);
+    transform-origin: left;
+    animation: barGrow 1s 0.6s ease both;
+  }
+
+  .skill-rating {
+    font-size: 0.62rem;
+    color: var(--dusty-rose);
+    width: 40px;
+    text-align: right;
+  }
+
+  @keyframes barGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* CTA BOX */
+  .cta-box {
+    background: var(--deep);
+    color: var(--cream);
+    padding: 40px 50px;
+    text-align: center;
+    margin-bottom: 36px;
+    position: relative;
+    animation: fadeUp 0.8s 0.5s ease both;
+  }
+
+  .cta-box::before {
+    content: '— an honest offer —';
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+    margin-bottom: 20px;
+  }
+
+  .cta-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    font-style: italic;
+    margin-bottom: 14px;
+    color: var(--blush);
+    line-height: 1.25;
+  }
+
+  .cta-box p {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: var(--blush);
+    opacity: 0.7;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background: var(--dusty-rose);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+
+  .cta-button:hover {
+    background: var(--terracotta);
+    transform: translateY(-2px);
+  }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: var(--faint);
+    border-left: 3px solid var(--blush);
+    padding: 20px 24px;
+    font-size: 0.65rem;
+    line-height: 1.8;
+    color: var(--warm-mid);
+    animation: fadeUp 0.8s 0.7s ease both;
+  }
+
+  .disclaimer strong {
+    color: var(--terracotta);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--blush);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+  }
+
+  /* FLOATY HEARTS */
+  .hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 1rem;
+    opacity: 0;
+    animation: floatHeart linear infinite;
+    color: var(--dusty-rose);
+  }
+
+  @keyframes floatHeart {
+    0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+    10%  { opacity: 0.3; }
+    90%  { opacity: 0.15; }
+    100% { opacity: 0; transform: translateY(-110vh) rotate(360deg); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* POLAROID-STYLE QUOTE */
+  .polaroid {
+    background: white;
+    border: 1px solid var(--blush);
+    padding: 24px 28px 34px;
+    max-width: 320px;
+    margin: 0 auto 40px;
+    box-shadow: 4px 4px 0 var(--faint), 8px 8px 0 var(--blush);
+    transform: rotate(1.2deg);
+    text-align: center;
+  }
+
+  .polaroid .quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--deep);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .polaroid .quote-attr {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dusty-rose);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .profile-card { padding: 30px 24px; }
+    .avatar-zone { flex-direction: column; align-items: center; text-align: center; }
+    .badges { justify-content: center; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .skill-name { width: 100px; }
+    .cta-box { padding: 30px 24px; }
+  }
+</style>
 </head>
-<body class="text-gray-100 antialiased">
+<body>
 
-    <!-- Header -->
-    <header class="fixed top-0 left-0 w-full bg-gradient-to-r from-purple-900 to-indigo-900 bg-opacity-70 backdrop-blur-sm z-50 p-4 shadow-lg rounded-b-xl">
-        <nav class="container mx-auto flex justify-between items-center px-4">
-            <h1 class="text-3xl font-extrabold text-white">📱 Digital Wellbeing</h1>
-            <div class="text-white text-lg hidden sm:block">
-                Navigating Social Media's Impact
-            </div>
-        </nav>
-    </header>
+<!-- Floating hearts bg -->
+<div class="hearts" id="hearts"></div>
 
-    <!-- Hero Section: Dynamic Opening - "The Digital Mirror" -->
-    <section id="hero" class="relative min-h-screen flex items-center justify-center text-center p-6 hero-background-gradient overflow-hidden">
-        <div class="absolute inset-0">
-            <!-- Abstract background elements, e.g., pulsating circles or moving lines -->
-            <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-500 rounded-full mix-blend-screen opacity-30 animate-pulse-custom"></div>
-            <div class="absolute bottom-1/3 right-1/4 w-48 h-48 bg-blue-500 rounded-full mix-blend-screen opacity-30 animate-pulse-custom animation-delay-2000"></div>
-            <div class="absolute top-1/2 right-1/10 w-24 h-24 bg-pink-500 rounded-full mix-blend-screen opacity-30 animate-pulse-custom animation-delay-4000"></div>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="stamp">Est. Sometime In The Past · Sydney · Accepting Applications</div>
+    <h1>Meet<br><em>Joshua</em><br>Houston</h1>
+    <div class="divider"></div>
+    <p class="subtitle">A Romantic Opportunity Of Questionable Merit</p>
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+
+    <div class="avatar-zone">
+      <div class="avatar">🧍</div>
+      <div class="name-block">
+        <h2>Joshua <span>Houston</span></h2>
+        <p class="tagline">He's Here. He's Available. Lower Your Standards.</p>
+        <div class="badges">
+          <span class="badge highlight">✦ Verified Single</span>
+          <span class="badge">Unemployed</span>
+          <span class="badge">5'5"</span>
+          <span class="badge">Twink Energy</span>
+          <span class="badge">Moustache (Patchy)</span>
         </div>
+      </div>
+    </div>
 
-        <div class="relative z-10 max-w-4xl mx-auto">
-            <h2 class="text-6xl md:text-7xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-                YOUR ONLINE REFLECTION
-            </h2>
-            <p id="hero-intro-text" class="text-2xl md:text-3xl text-gray-200 mb-10 leading-relaxed"></p>
-            <button id="start-exploring-btn" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-4 px-8 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out animate-pulse-custom">
-                🔍 EXPLORE THE IMPACT
-            </button>
-        </div>
-    </section>
+    <!-- BIO -->
+    <div class="section-label">About Him</div>
+    <p class="bio-text">
+      Joshua is a <strong>willowy, doe-eyed young man</strong> standing at a commanding five feet and five inches — 
+      every single one of them accounted for. His frame is best described as <strong>"effortlessly slender"</strong>, 
+      which is easy when you have all day to sit down. 
+      He sports a <strong>moustache</strong> that is, generously speaking, "in progress" — think of it as a work of 
+      conceptual art rather than facial hair. His skin is <strong>recovering from a battle with cystic acne</strong>, 
+      and like any great survivor, it has character. Texture. <em>History.</em> 
+      He is presently <strong>between careers</strong> (and has been for a while), which means he has 
+      a very open schedule for romantic dinners — as long as you're paying.
+    </p>
 
-    <!-- Section 2: Positive Impacts -->
-    <section id="positive-impacts" class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900 p-8 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden reveal-on-scroll">
-        <div class="absolute inset-0 z-0 opacity-20">
-            <!-- Abstract interconnected nodes visual -->
-            <div class="absolute top-10 left-10 w-24 h-24 bg-green-400 rounded-full mix-blend-lighten animate-pulse-custom"></div>
-            <div class="absolute bottom-20 right-20 w-32 h-32 bg-yellow-400 rounded-full mix-blend-lighten animate-pulse-custom animation-delay-1000"></div>
-            <div class="absolute top-1/2 left-1/3 w-28 h-28 bg-blue-400 rounded-full mix-blend-lighten animate-pulse-custom animation-delay-2000"></div>
-            <div class="absolute bottom-10 left-1/4 w-40 h-40 bg-pink-400 rounded-full mix-blend-lighten animate-pulse-custom animation-delay-3000"></div>
-        </div>
+    <!-- STATS -->
+    <div class="section-label">At A Glance</div>
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-label">Height</div>
+        <div class="stat-value">5'5"</div>
+        <div class="stat-note">standing tall</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Employment</div>
+        <div class="stat-value">0</div>
+        <div class="stat-note">jobs, currently</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Moustache</div>
+        <div class="stat-value">~40%</div>
+        <div class="stat-note">coverage</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Build</div>
+        <div class="stat-value">Slim</div>
+        <div class="stat-note">very slim</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Gamer Rank</div>
+        <div class="stat-value">—</div>
+        <div class="stat-note">unranked (often)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-label">Availability</div>
+        <div class="stat-value">24/7</div>
+        <div class="stat-note">nothing else on</div>
+      </div>
+    </div>
 
-        <div class="relative z-10 max-w-5xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold text-green-300 mb-10 drop-shadow-lg">
-                ✅ Feeling Connected: The Good Side
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed">
-                Social media, when used smartly, can really help us connect, learn new things, and express ourselves. Click on each idea to see its positive effects on how we feel.
-            </p>
+    <!-- FEATURES -->
+    <div class="section-label">What You Get</div>
+    <ul class="feature-list">
+      <li><span class="icon">✦</span><strong>The Look</strong> Cute in a "needs looking after" sort of way. Twink-adjacent, unmistakably sincere.</li>
+      <li><span class="icon">🕐</span><strong>Availability</strong> Completely free. Every day. No scheduling conflicts. Ever.</li>
+      <li><span class="icon">🎮</span><strong>Gaming</strong> Will play video games with you. Will lose. Will not take it well but will pretend to.</li>
+      <li><span class="icon">⚽</span><strong>Sports</strong> Enthusiastic spectator. Participation is a different conversation.</li>
+      <li><span class="icon">🌿</span><strong>Skin</strong> Dry but determined. A skincare routine could be a fun couples' activity.</li>
+      <li><span class="icon">💬</span><strong>Conversation</strong> Has opinions. Unclear if they're informed, but he holds them confidently.</li>
+      <li><span class="icon">🥐</span><strong>Meals</strong> Will eat whatever you make. This is a feature, not a bug.</li>
+    </ul>
 
-            <div id="positive-impacts-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mt-8">
-                <!-- Content will be injected here by JavaScript -->
-            </div>
-        </div>
-        <!-- Modal for Positive Impacts -->
-        <div id="positiveImpactModal" class="modal">
-            <div class="modal-content">
-                <span class="modal-close-button">&times;</span>
-                <h3 id="positive-modal-title" class="text-3xl font-bold mb-4 text-green-300"></h3>
-                <p id="positive-modal-text" class="text-lg leading-relaxed mb-4"></p>
-                <p id="positive-modal-fact" class="text-green-200 text-md italic"></p>
-            </div>
-        </div>
-    </section>
+    <!-- SKILLS -->
+    <div class="section-label">Skill Assessment</div>
+    <div class="skill-section">
+      <div class="skill-row">
+        <div class="skill-name">Video Games</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:18%"></div></div>
+        <div class="skill-rating">18%</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Sports</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:15%"></div></div>
+        <div class="skill-rating">15%</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Employed</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:0%"></div></div>
+        <div class="skill-rating">0%</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Cuteness</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%; background: var(--accent);"></div></div>
+        <div class="skill-rating" style="color:var(--accent)">82%</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Free Time</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:100%; background: var(--terracotta);"></div></div>
+        <div class="skill-rating" style="color:var(--terracotta)">∞</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-name">Moustache</div>
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:40%"></div></div>
+        <div class="skill-rating">40%</div>
+      </div>
+    </div>
 
-    <!-- Section 3: Negative Impacts -->
-    <section id="negative-impacts" class="min-h-screen bg-gradient-to-br from-red-900 to-purple-900 p-8 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden reveal-on-scroll">
-        <div id="negative-shapes-container" class="absolute inset-0 z-0">
-            <!-- Shapes controlled by JS to change with slider -->
-        </div>
+  </div>
 
-        <div class="relative z-10 max-w-5xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold text-red-300 mb-10 drop-shadow-lg">
-                ❌ The Downside: How It Can Hurt Feelings
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed">
-                Seeing endless perfect lives online and dealing with constant digital pressure can really impact our feelings and self-worth. Use the slider below to learn about these tough parts.
-            </p>
+  <!-- QUOTE POLAROID -->
+  <div class="polaroid">
+    <p class="quote">"He's not what you pictured. He's better. Well — he's something."</p>
+    <p class="quote-attr">— This Website, Doing Its Best</p>
+  </div>
 
-            <div class="bg-gray-800 bg-opacity-70 p-8 rounded-xl shadow-xl mb-10 relative">
-                <h3 class="text-3xl font-bold text-white mb-6">Explore Challenges:</h3>
-                <input type="range" id="impact-slider" min="0" max="2" value="0" step="1" class="w-full h-2 rounded-lg appearance-none cursor-pointer">
-                <div id="slider-value-label" class="slider-value-indicator"></div>
-                <div class="flex justify-between text-lg text-gray-300 mt-4">
-                    <span id="label-0">Feeling Anxious or Down</span>
-                    <span id="label-1">Comparing Yourself</span>
-                    <span id="label-2">Online Bullying</span>
-                </div>
-            </div>
+  <!-- CTA BOX -->
+  <div class="cta-box">
+    <h3>Ready to take a chance<br>on Joshua Houston?</h3>
+    <p>
+      He may not win at games, excel at sports, or maintain consistent employment — 
+      but he is, undeniably, present. And really, isn't that what we're all looking for 
+      at the end of the day?
+    </p>
+    <a class="cta-button" href="mailto:joshua@findlove.com">Shoot Your Shot ♡</a>
+  </div>
 
-            <div id="negative-impact-display" class="bg-gray-800 bg-opacity-70 p-8 rounded-xl shadow-xl max-w-3xl mx-auto min-h-[300px] flex flex-col justify-center">
-                <!-- Content will be dynamically updated by JavaScript -->
-            </div>
-        </div>
-    </section>
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Fine Print:</strong> Joshua Houston is a real person who did not write this. His friends did, which should tell you everything you need to know about the kind of loyalty he inspires. Despite what this page implies, he is apparently charming in person. Results may vary. No refunds. Skin condition improving daily. Moustache trajectory unclear. Employment status subject to change (optimistically).
+  </div>
 
-    <!-- Section 4: Privacy and Digital Footprint -->
-    <section id="privacy-data" class="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-8 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden reveal-on-scroll">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <div class="data-stream-container">
-                <div class="data-stream"></div>
-            </div>
-        </div>
-        <div class="relative z-10 max-w-5xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold text-blue-300 mb-10 drop-shadow-lg">
-                🕵️‍♀️ Your Online Footprint & Privacy
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed">
-                Every time you go online, you leave little digital traces. Knowing how your information is used and kept safe is super important for staying secure. Click a word to find out more.
-            </p>
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Joshua Houston Dating Page &nbsp;·&nbsp; Made With Love & Zero Shame &nbsp;·&nbsp; 2025</p>
+    <p style="margin-top:8px; opacity:0.5;">♡ &nbsp; All enquiries welcome &nbsp; ♡</p>
+  </div>
 
-            <div id="privacy-terms-container" class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-8">
-                <!-- Content will be injected here by JavaScript -->
-            </div>
-        </div>
+</div>
 
-        <!-- Modal for Privacy Terms -->
-        <div id="privacyModal" class="modal">
-            <div class="modal-content">
-                <span class="modal-close-button">&times;</span>
-                <h3 id="modal-term-title" class="text-3xl font-bold mb-4 text-purple-300"></h3>
-                <p id="modal-term-explanation" class="text-lg leading-relaxed"></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 5: Wellbeing Strategies -->
-    <section id="wellbeing-strategies" class="min-h-screen bg-gradient-to-br from-emerald-900 to-teal-900 p-8 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden reveal-on-scroll">
-        <div class="absolute inset-0 z-0 opacity-20">
-            <!-- Abstract bloom-like patterns -->
-            <div class="absolute top-10 left-10 w-40 h-40 bg-teal-300 rounded-full mix-blend-lighten opacity-50 animate-pulse-custom animation-delay-500"></div>
-            <div class="absolute bottom-20 right-20 w-52 h-52 bg-emerald-300 rounded-full mix-blend-lighten opacity-50 animate-pulse-custom animation-delay-1500"></div>
-            <div class="absolute top-1/3 right-1/4 w-32 h-32 bg-cyan-300 rounded-full mix-blend-lighten opacity-50 animate-pulse-custom animation-delay-2500"></div>
-        </div>
-
-        <div class="relative z-10 max-w-5xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold text-emerald-300 mb-10 drop-shadow-lg">
-                🌱 Feeling Good Online: Smart Habits
-            </h2>
-            <p class="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed">
-                Learning good habits is key to using social media in a way that makes you feel good. Hover over these cards for simple tips to make your online life better.
-            </p>
-
-            <div id="wellbeing-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mt-8">
-                <!-- Content will be injected here by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Conclusion Section -->
-    <section id="conclusion" class="min-h-[50vh] bg-gradient-to-br from-gray-900 to-black p-8 md:p-16 flex flex-col justify-center items-center text-center relative overflow-hidden reveal-on-scroll">
-        <div class="absolute inset-0 z-0 opacity-10">
-            <!-- Abstract light source / nebula effect -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white rounded-full mix-blend-overlay opacity-30 blur-3xl animate-pulse-custom"></div>
-        </div>
-        <div class="relative z-10 max-w-3xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-10 drop-shadow-lg">
-                ✨ Making Your Online Story Positive
-            </h2>
-            <p id="conclusion-text" class="text-xl md:text-2xl text-gray-300 leading-relaxed mb-8"></p>
-            <p class="text-lg md:text-xl text-gray-400">
-                Use it smartly. Feel good online.
-            </p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-500 py-6 text-center text-sm rounded-t-xl">
-        <div class="container mx-auto px-4">
-            © 2025 Social Media & Wellbeing Project - Year 11 Standard English
-            <br>
-            <span class="text-xs">Conceptual presentation for academic purposes.</span>
-        </div>
-    </footer>
-
-    <!-- Music Toggle Button -->
-    <button id="music-toggle-btn">
-        <span id="music-icon">🎶</span> Music On
-    </button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // Tone.js Music Setup
-            let synth;
-            let isMusicPlaying = false;
-            const musicToggleBtn = document.getElementById('music-toggle-btn');
-            const musicIcon = document.getElementById('music-icon');
-
-            async function setupMusic() {
-                try {
-                    await Tone.start(); // Unlock audio context
-                    console.log("Audio context started. User interacted.");
-                    synth = new Tone.Synth({
-                        oscillator: {
-                            type: "sine" // Softer, more ambient tone
-                        },
-                        envelope: {
-                            attack: 0.5,
-                            decay: 0.2,
-                            sustain: 0.5,
-                            release: 1.0 // Longer release for a pad-like sound
-                        }
-                    }).toDestination();
-
-                    // Simple arpeggiated chord sequence (C major 7th)
-                    const notes = ["C4", "E4", "G4", "B4", "C5"];
-                    let noteIndex = 0;
-
-                    Tone.Transport.scheduleRepeat(time => {
-                        if (isMusicPlaying && synth) { // Ensure music is still playing and synth exists
-                            // Play a random note from the chord to make it less repetitive
-                            const randomNote = notes[Math.floor(Math.random() * notes.length)];
-                            synth.triggerAttackRelease(randomNote, "2n", time); // Play for half a second
-                        }
-                    }, "1n"); // Trigger a note every whole note (slower)
-
-                    Tone.Transport.bpm.value = 60; // Very slow tempo for a calm, reflective mood
-                } catch (error) {
-                    console.error("Error setting up Tone.js:", error);
-                    musicToggleBtn.textContent = 'Music Error';
-                    musicToggleBtn.disabled = true;
-                }
-            }
-
-            musicToggleBtn.addEventListener('click', async () => {
-                if (!synth) { // Setup music only on first click to ensure audio context is ready
-                    await setupMusic();
-                }
-
-                if (isMusicPlaying) {
-                    Tone.Transport.stop();
-                    isMusicPlaying = false;
-                    musicIcon.textContent = '🔇';
-                    musicToggleBtn.innerHTML = '<span id="music-icon">🔇</span> Music Off';
-                } else {
-                    Tone.Transport.start(); // Start the transport to play the notes
-                    isMusicPlaying = true;
-                    musicIcon.textContent = '🎶';
-                    musicToggleBtn.innerHTML = '<span id="music-icon">🎶</span> Music On';
-                }
-            });
-
-
-            // Pre-generated static content - ALL content is here
-            const pageContent = {
-                "introduction": "Social media is a huge part of our daily lives, changing how we connect, see ourselves, and experience the world. This presentation looks into how it truly affects our feelings and well-being, exploring both its helpful sides and its real challenges.",
-                "positive_impacts": [
-                    {
-                        "title": "Finding Your Community & Support",
-                        "summary": "Connect with people who share your interests and get amazing support when you need it most.",
-                        "text": "Social media makes it easier to find and join groups based on shared hobbies, struggles, or passions. This can create a strong sense of belonging, making you feel less alone, especially if you have unique interests or face specific challenges. Sharing experiences and getting words of encouragement from others who 'get it' can truly lift your spirits and build real connections, even online.",
-                        "fact": "Many young people find comfort and friendship in online communities, especially when they feel alone, reducing feelings of isolation by up to 40%."
-                    },
-                    {
-                        "title": "Staying Close to Loved Ones",
-                        "summary": "Keep up with friends and family, no matter where they are, and share life's big and small moments.",
-                        "text": "Social media bridges distances, letting you see what your loved ones are up to, share your own updates, and feel like you're still part of their daily lives. Seeing photos, sending quick messages, or even having video calls helps maintain important relationships, making sure you feel connected to your inner circle even when miles apart. This strengthens bonds and prevents feelings of drifting apart.",
-                        "fact": "Over 75% of social media users say it helps them stay connected with friends and family they don't see often."
-                    },
-                    {
-                        "title": "Learning & Growing Together",
-                        "summary": "Discover new ideas, explore different viewpoints, and share your own thoughts, helping everyone learn.",
-                        "text": "Online platforms are buzzing with information and different ways of thinking. You can learn new skills, follow experts, or join discussions that broaden your mind. Sharing your own ideas and getting feedback can boost your confidence and help you see things in new ways. This feeling of shared learning and growth can be really exciting and empowering.",
-                        "fact": "Around 60% of social media users learn something new every week from content they see online."
-                    }
-                ],
-                "negative_impacts": [
-                    {
-                        "title": "The Weight of Comparison & Self-Doubt",
-                        "summary": "Constantly seeing perfect online lives can make you feel like you're not good enough.",
-                        "text": "When you endlessly scroll through everyone's highlight reels – perfect vacations, perfect bodies, perfect relationships – it's easy to start comparing your own life. This can lead to strong feelings of jealousy, envy, and a deep sense that your life isn't as exciting or successful. It chips away at your self-worth, making you doubt yourself and feel unhappy with what you have, because you're always measuring up against an unrealistic online ideal.",
-                        "quote": "It feels like everyone else is living their best life, and I'm just watching from the sidelines. It makes me feel small and anxious."
-                    },
-                    {
-                        "title": "Feeling Anxious or Down",
-                        "summary": "Too much screen time and online pressure can leave you feeling worried, stressed, or sad.",
-                        "text": "The constant 'on' nature of social media can make your brain feel overwhelmed. Always checking for likes, comments, or new posts can create a cycle of anxiety, making it hard to relax or focus. Seeing upsetting news, or even just the sheer volume of information, can contribute to feelings of stress, sadness, and even loneliness, despite being 'connected' to many people. This can make you feel disconnected from your real feelings and surroundings.",
-                        "quote": "I get this knot in my stomach if I don't check my phone for a bit. It’s like I’m missing out on something important."
-                    },
-                    {
-                        "title": "Online Bullying & Hurtful Words",
-                        "summary": "Unfortunately, social media can expose you to mean comments or bullying, which really hurts.",
-                        "text": "Social media, for all its good, can also be a place where people hide behind screens and say hurtful things. Being targeted by negative comments, rumours, or exclusion can cause deep emotional pain, embarrassment, and fear. It makes you feel unsafe and vulnerable online, affecting your self-confidence and making you hesitant to express yourself. The impact of these hurtful words can linger long after the comments are gone.",
-                        "quote": "Someone said something really mean about me online, and it still makes my stomach drop thinking about it. It just ruined my day, my week."
-                    }
-                ],
-                "privacy_data": [
-                    {
-                        "term": "Your Digital Shadow: What Stays Online?",
-                        "summary": "Every photo, comment, and like you make leaves a permanent mark online, like a shadow.",
-                        "explanation": "Every single thing you post, share, or even react to on social media becomes part of your 'digital shadow.' This information often stays online forever, even if you try to delete it. It means that future employers, universities, or even just curious people can find out a lot about you from years ago. This can feel a bit scary, as you might worry about past posts being misunderstood or used against you, affecting your future chances or how people see you."
-                    },
-                    {
-                        "term": "Who Sees Your Stuff? Privacy Settings",
-                        "summary": "You can control who sees your posts and personal info using special settings.",
-                        "explanation": "Privacy settings are your tools to decide who gets to see your online life. You can choose to share your posts only with friends, family, or the whole world. If your settings are too open, almost anyone can see your private thoughts and photos, which can feel unsettling and expose you to risks. Learning to use these settings wisely gives you a sense of control and safety, making your online space feel more personal and secure."
-                    }
-                ],
-                "wellbeing_strategies": [
-                    {
-                        "tip_title": "Taking Control: Setting Boundaries",
-                        "tip_summary": "Decide when and how you use social media to feel more in control and less overwhelmed.",
-                        "tip_description": "Set clear limits for yourself: maybe no social media after 9 PM, or only checking it for 30 minutes a day. Turn off notifications that aren't truly important. Create 'tech-free zones' in your home, like the dinner table or your bedroom. This isn't about missing out; it's about making space for real life. By doing this, you'll feel less tied to your phone, your mind will be calmer, and you'll have more time and energy for hobbies, sleep, and face-to-face connections."
-                    },
-                    {
-                        "tip_title": "Being Mindful: Think Before You Post",
-                        "tip_summary": "Pause and think about what you share and how it might make you and others feel.",
-                        "tip_description": "Before hitting 'post,' take a moment to breathe and ask yourself: 'Is this kind? Is this true? Is this helpful?' Think about how your words or pictures might be seen by different people. This practice helps reduce regrets later and encourages more positive interactions. When everyone is more thoughtful, online spaces become friendlier, more supportive, and safer places where you feel good about what you share and see."
-                    },
-                    {
-                        "tip_title": "Focusing on Real Connections",
-                        "tip_summary": "Remember that real-life friendships and family time are super important for your happiness.",
-                        "tip_description": "While online chats are fun, make sure you're also spending quality time with friends and family in person. Go for a walk, have a coffee, or just chat face-to-face. These real-life meetups build much deeper trust and emotional support that screens can't fully replace. Strong, close relationships outside of social media are key to feeling truly happy, understood, and supported in your life, giving you a strong base to stand on."
-                    }
-                ],
-                "conclusion": "The online world keeps changing, but you're always in charge of your experience. By understanding how social media affects your feelings, and by choosing healthy ways to use it, you can enjoy its good parts and avoid the bad. Your online future is all about using it wisely and happily."
-            };
-
-            // Immediately populate the DOM with the static content
-            document.getElementById('hero-intro-text').textContent = pageContent.introduction;
-
-            const positiveImpactsContainer = document.getElementById('positive-impacts-container');
-            positiveImpactsContainer.innerHTML = pageContent.positive_impacts.map((impact, index) => `
-                <div class="info-card p-6 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out cursor-pointer group relative overflow-hidden" data-impact-index="${index}">
-                    <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-blue-500 opacity-20 group-hover:opacity-40 transition-opacity duration-300 rounded-xl"></div>
-                    <h3 class="text-2xl font-bold text-green-300 mb-2 relative z-10">${impact.title || 'Untitled Impact'}</h3>
-                    <p class="text-gray-200 text-base relative z-10">${impact.summary || 'Summary not available.'}</p>
-                    <p class="text-green-200 text-sm italic mt-2 relative z-10">Click for more details.</p>
-                </div>
-            `).join('');
-
-            const negativeImpactDisplay = document.getElementById('negative-impact-display');
-            const impactSlider = document.getElementById('impact-slider');
-            // Ensure negative_impacts has at least one element for initial display
-            if (pageContent.negative_impacts.length > 0) {
-                const initialImpact = pageContent.negative_impacts[0];
-                negativeImpactDisplay.innerHTML = `
-                    <h3 class="text-3xl font-bold text-red-300 mb-4">${initialImpact.title || 'Loading...'}</h3>
-                    <p class="text-gray-200 text-lg mb-6">${initialImpact.text || 'Loading details...'}</p>
-                    <p class="text-red-200 text-xl italic mt-auto">
-                        "${initialImpact.quote || 'Loading quote...'}"
-                    </p>
-                `;
-                impactSlider.max = pageContent.negative_impacts.length - 1;
-                impactSlider.disabled = false;
-            } else {
-                negativeImpactDisplay.innerHTML = `<p class="text-red-400 text-lg">Negative impacts content could not be loaded.</p>`;
-                impactSlider.max = 0;
-                impactSlider.disabled = true;
-            }
-            
-
-            const privacyTermsContainer = document.getElementById('privacy-terms-container');
-            privacyTermsContainer.innerHTML = pageContent.privacy_data.map((item, index) => `
-                <div class="info-card p-6 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 ease-in-out cursor-pointer group relative overflow-hidden" data-term-index="${index}">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-500 opacity-20 group-hover:opacity-40 transition-opacity duration-300 rounded-xl"></div>
-                    <h3 class="text-2xl font-bold text-blue-300 mb-2 relative z-10">${item.term || 'Untitled Term'}</h3>
-                    <p class="text-gray-200 text-base relative z-10">${item.summary || 'Summary not available.'}</p>
-                    <p class="text-blue-200 text-sm italic mt-2 relative z-10">Click for more details.</p>
-                </div>
-            `).join('');
-
-            const wellbeingCardsContainer = document.getElementById('wellbeing-cards-container');
-            wellbeingCardsContainer.innerHTML = pageContent.wellbeing_strategies.map((strategy, index) => `
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front flex flex-col items-center justify-center p-4">
-                            <h3 class="text-2xl font-bold">${strategy.tip_title || 'Untitled Tip'}</h3>
-                            <p class="text-gray-200 text-base mt-2">${strategy.tip_summary || 'Summary not available.'}</p>
-                            <p class="text-blue-200 text-sm italic mt-2">Hover for details.</p>
-                        </div>
-                        <div class="flip-card-back flex items-center justify-center p-4">
-                            <p class="text-md leading-relaxed">${strategy.tip_description || 'No detailed description available.'}</p>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            document.getElementById('conclusion-text').textContent = pageContent.conclusion;
-
-            // Common Event Listeners - attached AFTER content is rendered to ensure elements exist
-            const positiveImpactModal = document.getElementById('positiveImpactModal');
-            const privacyModal = document.getElementById('privacyModal');
-            const closePositiveModalBtn = positiveImpactModal.querySelector('.modal-close-button');
-            const modalCloseBtn = privacyModal.querySelector('.modal-close-button');
-
-            // Attach listeners for Positive Impacts cards
-            // Using requestAnimationFrame to ensure the DOM has updated
-            requestAnimationFrame(() => {
-                document.querySelectorAll('#positive-impacts-container .info-card').forEach(card => {
-                    card.addEventListener('click', (event) => {
-                        const index = parseInt(event.currentTarget.dataset.impactIndex);
-                        if (pageContent.positive_impacts.length > index) {
-                            const impactData = pageContent.positive_impacts[index];
-                            document.getElementById('positive-modal-title').textContent = impactData.title || 'Details';
-                            document.getElementById('positive-modal-text').textContent = impactData.text || 'No detailed text available.';
-                            document.getElementById('positive-modal-fact').textContent = `Fact: ${impactData.fact || 'No fact available.'}`;
-                            positiveImpactModal.style.display = 'flex';
-                            console.log(`Positive Impact Card Clicked: ${impactData.title}`);
-                        }
-                    });
-                });
-
-                // Attach listeners for Privacy Terms cards
-                document.querySelectorAll('#privacy-terms-container .info-card').forEach(card => {
-                    card.addEventListener('click', (event) => {
-                        const index = parseInt(event.currentTarget.dataset.termIndex);
-                        if (pageContent.privacy_data.length > index) {
-                            const termData = pageContent.privacy_data[index];
-                            document.getElementById('modal-term-title').textContent = termData.term || 'Details';
-                            document.getElementById('modal-term-explanation').textContent = termData.explanation || 'No detailed explanation available.';
-                            privacyModal.style.display = 'flex';
-                            console.log(`Privacy Term Card Clicked: ${termData.term}`);
-                        }
-                    });
-                });
-            });
-
-
-            closePositiveModalBtn.onclick = () => positiveImpactModal.style.display = 'none';
-            modalCloseBtn.onclick = () => privacyModal.style.display = 'none';
-            window.onclick = (event) => {
-                if (event.target === privacyModal || event.target === positiveImpactModal) {
-                    privacyModal.style.display = 'none';
-                    positiveImpactModal.style.display = 'none';
-                }
-            };
-
-            const sliderValueLabel = document.getElementById('slider-value-label');
-            const negativeShapesContainer = document.getElementById('negative-shapes-container');
-
-            function updateNegativeImpactDisplay(index) {
-                if (pageContent.negative_impacts.length > index) {
-                    const impact = pageContent.negative_impacts[index];
-                    negativeImpactDisplay.innerHTML = `
-                        <h3 class="text-3xl font-bold text-red-300 mb-4">${impact.title || 'Loading...'}</h3>
-                        <p class="text-gray-200 text-lg mb-6">${impact.text || 'Loading details...'}</p>
-                        <p class="text-red-200 text-xl italic mt-auto">
-                            "${impact.quote || 'Loading quote...'}"
-                        </p>
-                    `;
-                    sliderValueLabel.textContent = impact.title || '';
-                    requestAnimationFrame(() => {
-                        const sliderRect = impactSlider.getBoundingClientRect();
-                        const thumbWidth = 20;
-                        const value = parseInt(impactSlider.value);
-                        const max = parseInt(impactSlider.max);
-                        let thumbPositionPx = 0;
-                        if (max > 0) {
-                            thumbPositionPx = (sliderRect.width - thumbWidth) * (value / max) + (thumbWidth / 2);
-                        } else {
-                            thumbPositionPx = sliderRect.width / 2;
-                        }
-                        sliderValueLabel.style.left = `${thumbPositionPx}px`;
-                        sliderValueLabel.style.transform = `translateX(-50%)`;
-                    });
-
-                    negativeShapesContainer.innerHTML = '';
-                    const colors = ['rgba(255, 0, 0, 0.3)', 'rgba(255, 100, 0, 0.3)', 'rgba(255, 150, 0, 0.3)'];
-                    const positions = [
-                        { top: '10%', left: '15%', width: '80px', height: '80px', 'animation-delay': '0s' },
-                        { top: '30%', right: '20%', width: '120px', height: '120px', 'animation-delay': '2s' },
-                        { bottom: '20%', left: '25%', width: '100px', height: '100px', 'animation-delay': '4s' }
-                    ];
-                    for(let i = 0; i < Math.min(3, pageContent.negative_impacts.length); i++) {
-                        const shapeDiv = document.createElement('div');
-                        shapeDiv.className = 'fragmented-shape';
-                        Object.assign(shapeDiv.style, positions[i]);
-                        shapeDiv.style.backgroundColor = colors[index % colors.length];
-                        negativeShapesContainer.appendChild(shapeDiv);
-                    }
-                } else {
-                    negativeImpactDisplay.innerHTML = `<p class="text-red-400 text-lg">Content not available for this selection.</p>`;
-                }
-            }
-            // Initialize the negative impact display with the first item
-            if (pageContent.negative_impacts.length > 0) {
-                updateNegativeImpactDisplay(0);
-            }
-            impactSlider.oninput = (event) => updateNegativeImpactDisplay(parseInt(event.target.value));
-
-
-            // Apply scroll-triggered animations
-            const sections = document.querySelectorAll('.reveal-on-scroll');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // Smooth scrolling for "Start Exploring" button
-            document.getElementById('start-exploring-btn').addEventListener('click', () => {
-                document.getElementById('positive-impacts').scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+<script>
+  // Spawn floating hearts
+  const container = document.getElementById('hearts');
+  const symbols = ['♡', '♡', '✦', '♡'];
+  for (let i = 0; i < 14; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    h.style.left = Math.random() * 100 + '%';
+    h.style.fontSize = (0.6 + Math.random() * 0.8) + 'rem';
+    h.style.animationDuration = (12 + Math.random() * 18) + 's';
+    h.style.animationDelay = (Math.random() * 20) + 's';
+    h.style.opacity = 0;
+    container.appendChild(h);
+  }
+</script>
 </body>
 </html>
